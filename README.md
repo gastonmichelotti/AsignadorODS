@@ -37,6 +37,7 @@ HEADERS:
 - Content-Type: application/json
 
 EJEMPLO DE BODY:
+"""json
 {
   "viajes": [
     {
@@ -128,9 +129,10 @@ EJEMPLO DE BODY:
     }
   ]
 }
+"""
 
 EJEMPLO DE RESPUESTA:
-
+""" json
 {
     "asignaciones": [
         {
@@ -173,3 +175,4 @@ EJEMPLO DE RESPUESTA:
     "distancia_promedio_idvehiculo_4": 1095.55,
     "distancia_total_metros": 5224.21
 }
+"""
