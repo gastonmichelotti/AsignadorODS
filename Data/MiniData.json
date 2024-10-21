@@ -1,0 +1,96 @@
+{
+  "viajes": [
+    {
+      "distancia": 1931.27,
+      "id": 1,
+      "idUsuario": 16556,
+      "latitudOrigen": -34.58567,
+      "longitudOrigen": -58.46624,
+      "fechaProcesamientoODS": "0001-01-01T00:00:00",
+      "idDireccion": 30635
+    },
+    {
+      "distancia": 838.94,
+      "id": 2,
+      "idUsuario": 16556,
+      "latitudOrigen": -34.62064,
+      "longitudOrigen": -58.46504,
+      "fechaProcesamientoODS": "0001-01-01T00:00:00",
+      "idDireccion": 30635
+    },
+    {
+      "distancia": 606.69,
+      "id": 3,
+      "idUsuario": 16556,
+      "latitudOrigen": -34.61047,
+      "longitudOrigen": -58.40599,
+      "fechaProcesamientoODS": "0001-01-01T00:00:00",
+      "idDireccion": 30635
+    },
+    {
+      "distancia": 1955.25,
+      "id": 4,
+      "idUsuario": 16556,
+      "latitudOrigen": -34.58421,
+      "longitudOrigen": -58.43667,
+      "fechaProcesamientoODS": "0001-01-01T00:00:00",
+      "idDireccion": 30635
+    },
+    {
+      "distancia": 984.95,
+      "id": 5,
+      "idUsuario": 16556,
+      "latitudOrigen": -34.59268,
+      "longitudOrigen": -58.45499,
+      "fechaProcesamientoODS": "0001-01-01T00:00:00",
+      "idDireccion": 30635
+    }
+  ],
+  "reservas": [
+    {
+      "idDireccion": 30635,
+      "idUsuario": 23317,
+      "id": 1,
+      "latitud": -34.57875,
+      "longitud": -58.4574,
+      "idVehiculo": 4,
+      "radioMaximoAsignacion": 3000
+    },
+    {
+      "idDireccion": 30635,
+      "idUsuario": 23317,
+      "id": 2,
+      "latitud": -34.61499,
+      "longitud": -58.47551,
+      "idVehiculo": 1,
+      "radioMaximoAsignacion": 8000
+    },
+    {
+      "idDireccion": 30635,
+      "idUsuario": 23317,
+      "id": 3,
+      "latitud": -34.59987,
+      "longitud": -58.41337,
+      "idVehiculo": 4,
+      "radioMaximoAsignacion": 3000
+    },
+    {
+      "idDireccion": 30635,
+      "idUsuario": 23317,
+      "id": 4,
+      "latitud": -34.5804,
+      "longitud": -58.42911,
+      "idVehiculo": 4,
+      "radioMaximoAsignacion": 3000
+    },
+    {
+      "idDireccion": 30635,
+      "idUsuario": 23317,
+      "id": 5,
+      "latitud": -34.59781,
+      "longitud": -58.46099,
+      "idVehiculo": 1,
+      "radioMaximoAsignacion": 8000
+    }
+  ]
+}

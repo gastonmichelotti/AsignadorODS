@@ -1,0 +1,702 @@
+[
+    {
+        "$id": "1",
+        "IdViaje": 48,
+        "IdReserva": 42,
+        "DistanciaPickeo": 16.6,
+        "Coeficiente": 16.6
+    },
+    {
+        "$id": "2",
+        "IdViaje": 59,
+        "IdReserva": 91,
+        "DistanciaPickeo": 32.8,
+        "Coeficiente": 32.8
+    },
+    {
+        "$id": "3",
+        "IdViaje": 28,
+        "IdReserva": 66,
+        "DistanciaPickeo": 38.6,
+        "Coeficiente": 38.6
+    },
+    {
+        "$id": "4",
+        "IdViaje": 33,
+        "IdReserva": 88,
+        "DistanciaPickeo": 85.4,
+        "Coeficiente": 85.4
+    },
+    {
+        "$id": "5",
+        "IdViaje": 65,
+        "IdReserva": 70,
+        "DistanciaPickeo": 95.4,
+        "Coeficiente": 95.4
+    },
+    {
+        "$id": "6",
+        "IdViaje": 13,
+        "IdReserva": 60,
+        "DistanciaPickeo": 113.4,
+        "Coeficiente": 113.4
+    },
+    {
+        "$id": "7",
+        "IdViaje": 84,
+        "IdReserva": 7,
+        "DistanciaPickeo": 126.2,
+        "Coeficiente": 126.2
+    },
+    {
+        "$id": "8",
+        "IdViaje": 87,
+        "IdReserva": 86,
+        "DistanciaPickeo": 129.7,
+        "Coeficiente": 129.7
+    },
+    {
+        "$id": "9",
+        "IdViaje": 61,
+        "IdReserva": 2,
+        "DistanciaPickeo": 144.1,
+        "Coeficiente": 144.1
+    },
+    {
+        "$id": "10",
+        "IdViaje": 15,
+        "IdReserva": 95,
+        "DistanciaPickeo": 152.9,
+        "Coeficiente": 152.9
+    },
+    {
+        "$id": "11",
+        "IdViaje": 12,
+        "IdReserva": 28,
+        "DistanciaPickeo": 156.9,
+        "Coeficiente": 156.9
+    },
+    {
+        "$id": "12",
+        "IdViaje": 36,
+        "IdReserva": 30,
+        "DistanciaPickeo": 159.4,
+        "Coeficiente": 159.4
+    },
+    {
+        "$id": "13",
+        "IdViaje": 21,
+        "IdReserva": 71,
+        "DistanciaPickeo": 178.9,
+        "Coeficiente": 178.9
+    },
+    {
+        "$id": "14",
+        "IdViaje": 67,
+        "IdReserva": 100,
+        "DistanciaPickeo": 181.4,
+        "Coeficiente": 181.4
+    },
+    {
+        "$id": "15",
+        "IdViaje": 98,
+        "IdReserva": 98,
+        "DistanciaPickeo": 185.7,
+        "Coeficiente": 185.7
+    },
+    {
+        "$id": "16",
+        "IdViaje": 18,
+        "IdReserva": 72,
+        "DistanciaPickeo": 188.4,
+        "Coeficiente": 188.4
+    },
+    {
+        "$id": "17",
+        "IdViaje": 63,
+        "IdReserva": 1,
+        "DistanciaPickeo": 204.8,
+        "Coeficiente": 204.8
+    },
+    {
+        "$id": "18",
+        "IdViaje": 86,
+        "IdReserva": 27,
+        "DistanciaPickeo": 210.9,
+        "Coeficiente": 210.9
+    },
+    {
+        "$id": "19",
+        "IdViaje": 78,
+        "IdReserva": 39,
+        "DistanciaPickeo": 223.5,
+        "Coeficiente": 223.5
+    },
+    {
+        "$id": "20",
+        "IdViaje": 92,
+        "IdReserva": 76,
+        "DistanciaPickeo": 225.5,
+        "Coeficiente": 225.5
+    },
+    {
+        "$id": "21",
+        "IdViaje": 96,
+        "IdReserva": 52,
+        "DistanciaPickeo": 243.8,
+        "Coeficiente": 243.8
+    },
+    {
+        "$id": "22",
+        "IdViaje": 71,
+        "IdReserva": 74,
+        "DistanciaPickeo": 245.9,
+        "Coeficiente": 245.9
+    },
+    {
+        "$id": "23",
+        "IdViaje": 62,
+        "IdReserva": 61,
+        "DistanciaPickeo": 259.8,
+        "Coeficiente": 259.8
+    },
+    {
+        "$id": "24",
+        "IdViaje": 81,
+        "IdReserva": 29,
+        "DistanciaPickeo": 273.6,
+        "Coeficiente": 273.6
+    },
+    {
+        "$id": "25",
+        "IdViaje": 75,
+        "IdReserva": 44,
+        "DistanciaPickeo": 294.3,
+        "Coeficiente": 294.3
+    },
+    {
+        "$id": "26",
+        "IdViaje": 49,
+        "IdReserva": 50,
+        "DistanciaPickeo": 319.7,
+        "Coeficiente": 319.7
+    },
+    {
+        "$id": "27",
+        "IdViaje": 43,
+        "IdReserva": 4,
+        "DistanciaPickeo": 323.9,
+        "Coeficiente": 323.9
+    },
+    {
+        "$id": "28",
+        "IdViaje": 82,
+        "IdReserva": 43,
+        "DistanciaPickeo": 330.0,
+        "Coeficiente": 330.0
+    },
+    {
+        "$id": "29",
+        "IdViaje": 53,
+        "IdReserva": 65,
+        "DistanciaPickeo": 331.9,
+        "Coeficiente": 331.9
+    },
+    {
+        "$id": "30",
+        "IdViaje": 54,
+        "IdReserva": 45,
+        "DistanciaPickeo": 332.5,
+        "Coeficiente": 332.5
+    },
+    {
+        "$id": "31",
+        "IdViaje": 42,
+        "IdReserva": 24,
+        "DistanciaPickeo": 341.8,
+        "Coeficiente": 341.8
+    },
+    {
+        "$id": "32",
+        "IdViaje": 20,
+        "IdReserva": 93,
+        "DistanciaPickeo": 357.8,
+        "Coeficiente": 357.8
+    },
+    {
+        "$id": "33",
+        "IdViaje": 97,
+        "IdReserva": 85,
+        "DistanciaPickeo": 374.5,
+        "Coeficiente": 374.5
+    },
+    {
+        "$id": "34",
+        "IdViaje": 76,
+        "IdReserva": 64,
+        "DistanciaPickeo": 385.6,
+        "Coeficiente": 385.6
+    },
+    {
+        "$id": "35",
+        "IdViaje": 89,
+        "IdReserva": 54,
+        "DistanciaPickeo": 395.4,
+        "Coeficiente": 395.4
+    },
+    {
+        "$id": "36",
+        "IdViaje": 69,
+        "IdReserva": 99,
+        "DistanciaPickeo": 405.4,
+        "Coeficiente": 405.4
+    },
+    {
+        "$id": "37",
+        "IdViaje": 10,
+        "IdReserva": 48,
+        "DistanciaPickeo": 428.9,
+        "Coeficiente": 428.9
+    },
+    {
+        "$id": "38",
+        "IdViaje": 74,
+        "IdReserva": 89,
+        "DistanciaPickeo": 439.7,
+        "Coeficiente": 439.7
+    },
+    {
+        "$id": "39",
+        "IdViaje": 64,
+        "IdReserva": 11,
+        "DistanciaPickeo": 449.1,
+        "Coeficiente": 449.1
+    },
+    {
+        "$id": "40",
+        "IdViaje": 50,
+        "IdReserva": 47,
+        "DistanciaPickeo": 465.7,
+        "Coeficiente": 465.7
+    },
+    {
+        "$id": "41",
+        "IdViaje": 25,
+        "IdReserva": 3,
+        "DistanciaPickeo": 469.3,
+        "Coeficiente": 469.3
+    },
+    {
+        "$id": "42",
+        "IdViaje": 32,
+        "IdReserva": 17,
+        "DistanciaPickeo": 480.2,
+        "Coeficiente": 480.2
+    },
+    {
+        "$id": "43",
+        "IdViaje": 58,
+        "IdReserva": 69,
+        "DistanciaPickeo": 486.2,
+        "Coeficiente": 486.2
+    },
+    {
+        "$id": "44",
+        "IdViaje": 72,
+        "IdReserva": 90,
+        "DistanciaPickeo": 489.8,
+        "Coeficiente": 489.8
+    },
+    {
+        "$id": "45",
+        "IdViaje": 11,
+        "IdReserva": 20,
+        "DistanciaPickeo": 500.0,
+        "Coeficiente": 500.0
+    },
+    {
+        "$id": "46",
+        "IdViaje": 46,
+        "IdReserva": 15,
+        "DistanciaPickeo": 505.5,
+        "Coeficiente": 505.5
+    },
+    {
+        "$id": "47",
+        "IdViaje": 16,
+        "IdReserva": 96,
+        "DistanciaPickeo": 510.2,
+        "Coeficiente": 510.2
+    },
+    {
+        "$id": "48",
+        "IdViaje": 7,
+        "IdReserva": 5,
+        "DistanciaPickeo": 519.9,
+        "Coeficiente": 519.9
+    },
+    {
+        "$id": "49",
+        "IdViaje": 6,
+        "IdReserva": 6,
+        "DistanciaPickeo": 522.2,
+        "Coeficiente": 522.2
+    },
+    {
+        "$id": "50",
+        "IdViaje": 41,
+        "IdReserva": 38,
+        "DistanciaPickeo": 525.3,
+        "Coeficiente": 525.3
+    },
+    {
+        "$id": "51",
+        "IdViaje": 40,
+        "IdReserva": 82,
+        "DistanciaPickeo": 528.9,
+        "Coeficiente": 528.9
+    },
+    {
+        "$id": "52",
+        "IdViaje": 95,
+        "IdReserva": 10,
+        "DistanciaPickeo": 533.3,
+        "Coeficiente": 533.3
+    },
+    {
+        "$id": "53",
+        "IdViaje": 31,
+        "IdReserva": 79,
+        "DistanciaPickeo": 550.9,
+        "Coeficiente": 550.9
+    },
+    {
+        "$id": "54",
+        "IdViaje": 100,
+        "IdReserva": 46,
+        "DistanciaPickeo": 564.5,
+        "Coeficiente": 564.5
+    },
+    {
+        "$id": "55",
+        "IdViaje": 29,
+        "IdReserva": 18,
+        "DistanciaPickeo": 596.5,
+        "Coeficiente": 596.5
+    },
+    {
+        "$id": "56",
+        "IdViaje": 93,
+        "IdReserva": 58,
+        "DistanciaPickeo": 606.1,
+        "Coeficiente": 606.1
+    },
+    {
+        "$id": "57",
+        "IdViaje": 79,
+        "IdReserva": 67,
+        "DistanciaPickeo": 616.6,
+        "Coeficiente": 616.6
+    },
+    {
+        "$id": "58",
+        "IdViaje": 51,
+        "IdReserva": 22,
+        "DistanciaPickeo": 622.1,
+        "Coeficiente": 622.1
+    },
+    {
+        "$id": "59",
+        "IdViaje": 99,
+        "IdReserva": 73,
+        "DistanciaPickeo": 624.9,
+        "Coeficiente": 624.9
+    },
+    {
+        "$id": "60",
+        "IdViaje": 37,
+        "IdReserva": 77,
+        "DistanciaPickeo": 641.2,
+        "Coeficiente": 641.2
+    },
+    {
+        "$id": "61",
+        "IdViaje": 14,
+        "IdReserva": 56,
+        "DistanciaPickeo": 654.6,
+        "Coeficiente": 654.6
+    },
+    {
+        "$id": "62",
+        "IdViaje": 26,
+        "IdReserva": 40,
+        "DistanciaPickeo": 655.7,
+        "Coeficiente": 655.7
+    },
+    {
+        "$id": "63",
+        "IdViaje": 27,
+        "IdReserva": 19,
+        "DistanciaPickeo": 667.0,
+        "Coeficiente": 667.0
+    },
+    {
+        "$id": "64",
+        "IdViaje": 44,
+        "IdReserva": 23,
+        "DistanciaPickeo": 670.5,
+        "Coeficiente": 670.5
+    },
+    {
+        "$id": "65",
+        "IdViaje": 3,
+        "IdReserva": 62,
+        "DistanciaPickeo": 706.6,
+        "Coeficiente": 706.6
+    },
+    {
+        "$id": "66",
+        "IdViaje": 34,
+        "IdReserva": 87,
+        "DistanciaPickeo": 718.0,
+        "Coeficiente": 718.0
+    },
+    {
+        "$id": "67",
+        "IdViaje": 38,
+        "IdReserva": 84,
+        "DistanciaPickeo": 774.0,
+        "Coeficiente": 774.0
+    },
+    {
+        "$id": "68",
+        "IdViaje": 94,
+        "IdReserva": 26,
+        "DistanciaPickeo": 821.5,
+        "Coeficiente": 821.5
+    },
+    {
+        "$id": "69",
+        "IdViaje": 5,
+        "IdReserva": 9,
+        "DistanciaPickeo": 828.2,
+        "Coeficiente": 828.2
+    },
+    {
+        "$id": "70",
+        "IdViaje": 83,
+        "IdReserva": 53,
+        "DistanciaPickeo": 863.4,
+        "Coeficiente": 863.4
+    },
+    {
+        "$id": "71",
+        "IdViaje": 88,
+        "IdReserva": 41,
+        "DistanciaPickeo": 879.0,
+        "Coeficiente": 879.0
+    },
+    {
+        "$id": "72",
+        "IdViaje": 66,
+        "IdReserva": 21,
+        "DistanciaPickeo": 900.3,
+        "Coeficiente": 900.3
+    },
+    {
+        "$id": "73",
+        "IdViaje": 80,
+        "IdReserva": 14,
+        "DistanciaPickeo": 927.7,
+        "Coeficiente": 927.7
+    },
+    {
+        "$id": "74",
+        "IdViaje": 22,
+        "IdReserva": 68,
+        "DistanciaPickeo": 963.5,
+        "Coeficiente": 963.5
+    },
+    {
+        "$id": "75",
+        "IdViaje": 24,
+        "IdReserva": 35,
+        "DistanciaPickeo": 983.0,
+        "Coeficiente": 983.0
+    },
+    {
+        "$id": "76",
+        "IdViaje": 56,
+        "IdReserva": 31,
+        "DistanciaPickeo": 1104.9,
+        "Coeficiente": 1104.9
+    },
+    {
+        "$id": "77",
+        "IdViaje": 57,
+        "IdReserva": 25,
+        "DistanciaPickeo": 1119.4,
+        "Coeficiente": 1119.4
+    },
+    {
+        "$id": "78",
+        "IdViaje": 45,
+        "IdReserva": 36,
+        "DistanciaPickeo": 1135.8,
+        "Coeficiente": 1135.8
+    },
+    {
+        "$id": "79",
+        "IdViaje": 60,
+        "IdReserva": 78,
+        "DistanciaPickeo": 1228.5,
+        "Coeficiente": 1228.5
+    },
+    {
+        "$id": "80",
+        "IdViaje": 2,
+        "IdReserva": 59,
+        "DistanciaPickeo": 1243.1,
+        "Coeficiente": 1243.1
+    },
+    {
+        "$id": "81",
+        "IdViaje": 55,
+        "IdReserva": 13,
+        "DistanciaPickeo": 1244.9,
+        "Coeficiente": 1244.9
+    },
+    {
+        "$id": "82",
+        "IdViaje": 70,
+        "IdReserva": 97,
+        "DistanciaPickeo": 1284.9,
+        "Coeficiente": 1284.9
+    },
+    {
+        "$id": "83",
+        "IdViaje": 39,
+        "IdReserva": 33,
+        "DistanciaPickeo": 1349.2,
+        "Coeficiente": 1349.2
+    },
+    {
+        "$id": "84",
+        "IdViaje": 8,
+        "IdReserva": 49,
+        "DistanciaPickeo": 1866.3,
+        "Coeficiente": 1866.3
+    },
+    {
+        "$id": "85",
+        "IdViaje": 91,
+        "IdReserva": 55,
+        "DistanciaPickeo": 1972.6,
+        "Coeficiente": 1972.6
+    },
+    {
+        "$id": "86",
+        "IdViaje": 9,
+        "IdReserva": 32,
+        "DistanciaPickeo": 2544.3,
+        "Coeficiente": 2544.3
+    },
+    {
+        "$id": "87",
+        "IdViaje": 30,
+        "IdReserva": 37,
+        "DistanciaPickeo": 3139.9,
+        "Coeficiente": 3139.9
+    },
+    {
+        "$id": "88",
+        "IdViaje": 19,
+        "IdReserva": 83,
+        "DistanciaPickeo": 3537.3,
+        "Coeficiente": 3537.3
+    },
+    {
+        "$id": "89",
+        "IdViaje": 52,
+        "IdReserva": 75,
+        "DistanciaPickeo": 3651.3,
+        "Coeficiente": 3651.3
+    },
+    {
+        "$id": "90",
+        "IdViaje": 35,
+        "IdReserva": 57,
+        "DistanciaPickeo": 3702.2,
+        "Coeficiente": 3702.2
+    },
+    {
+        "$id": "91",
+        "IdViaje": 17,
+        "IdReserva": 16,
+        "DistanciaPickeo": 4689.7,
+        "Coeficiente": 4689.7
+    },
+    {
+        "$id": "92",
+        "IdViaje": 23,
+        "IdReserva": 94,
+        "DistanciaPickeo": 5611.7,
+        "Coeficiente": 5611.7
+    },
+    {
+        "$id": "93",
+        "IdViaje": 68,
+        "IdReserva": 12,
+        "DistanciaPickeo": 5911.6,
+        "Coeficiente": 5911.6
+    },
+    {
+        "$id": "94",
+        "IdViaje": 85,
+        "IdReserva": 8,
+        "DistanciaPickeo": 6110.8,
+        "Coeficiente": 6110.8
+    },
+    {
+        "$id": "95",
+        "IdViaje": 47,
+        "IdReserva": 80,
+        "DistanciaPickeo": 6872.9,
+        "Coeficiente": 6872.9
+    },
+    {
+        "$id": "96",
+        "IdViaje": 1,
+        "IdReserva": 34,
+        "DistanciaPickeo": 6946.7,
+        "Coeficiente": 6946.7
+    },
+    {
+        "$id": "97",
+        "IdViaje": 77,
+        "IdReserva": 51,
+        "DistanciaPickeo": 7130.7,
+        "Coeficiente": 7130.7
+    },
+    {
+        "$id": "98",
+        "IdViaje": 73,
+        "IdReserva": 81,
+        "DistanciaPickeo": 8273.8,
+        "Coeficiente": 8273.8
+    },
+    {
+        "$id": "99",
+        "IdViaje": 90,
+        "IdReserva": 92,
+        "DistanciaPickeo": 9118.0,
+        "Coeficiente": 9118.0
+    },
+    {
+        "$id": "100",
+        "IdViaje": 4,
+        "IdReserva": 63,
+        "DistanciaPickeo": 9732.0,
+        "Coeficiente": 9732.0
+    }
+]
