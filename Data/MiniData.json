@@ -6,7 +6,6 @@
       "idUsuario": 16556,
       "latitudOrigen": -34.58567,
       "longitudOrigen": -58.46624,
-      "fechaProcesamientoODS": "0001-01-01T00:00:00",
       "idDireccion": 30635
     },
     {
@@ -15,7 +14,6 @@
       "idUsuario": 16556,
       "latitudOrigen": -34.62064,
       "longitudOrigen": -58.46504,
-      "fechaProcesamientoODS": "0001-01-01T00:00:00",
       "idDireccion": 30635
     },
     {
@@ -24,7 +22,6 @@
       "idUsuario": 16556,
       "latitudOrigen": -34.61047,
       "longitudOrigen": -58.40599,
-      "fechaProcesamientoODS": "0001-01-01T00:00:00",
       "idDireccion": 30635
     },
     {
@@ -33,7 +30,6 @@
       "idUsuario": 16556,
       "latitudOrigen": -34.58421,
       "longitudOrigen": -58.43667,
-      "fechaProcesamientoODS": "0001-01-01T00:00:00",
       "idDireccion": 30635
     },
     {
@@ -42,7 +38,6 @@
       "idUsuario": 16556,
       "latitudOrigen": -34.59268,
       "longitudOrigen": -58.45499,
-      "fechaProcesamientoODS": "0001-01-01T00:00:00",
       "idDireccion": 30635
     }
   ],
