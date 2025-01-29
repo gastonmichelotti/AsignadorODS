@@ -1,19 +1,17 @@
-A continuación se muestra un ejemplo de cómo podrías actualizar tu archivo README.md para documentar las nuevas funcionalidades y los formatos de body correspondientes para los dos endpoints: asignar_repas y asignar_repas_zonas, incluyendo la nueva funcionalidad de DistanciaMáximaDeAsignación por vehículo (idVehiculo = 1 y 4).
-
 ## Asignador de Repartidores
 
 Este proyecto utiliza Flask para exponer endpoints que asignan repartidores a viajes bajo distintas lógicas:
-	1.	Asignación simple (sin considerar zonas), basado en la minimización de distancia.
-	2.	Asignación por zonas (considera la misma dirección de reparto para agrupar y asignar), con posibilidad de restringir la distancia máxima en función del tipo de vehículo.
+
+1. **Asignación simple** (sin considerar zonas), basado en la minimización de distancia.
+2. **Asignación por zonas** (considera la misma dirección de reparto para agrupar y asignar), con posibilidad de restringir la distancia máxima en función del tipo de vehículo.
 
 ### Requerimientos
-	•	Python 3.7+
-	•	Flask
-	•	Numpy
-	•	SciPy
-	•	(Opcional) Cualquier otra librería mencionada en tus ficheros.
 
-Instalación de dependencias (ejemplo):
+- Python 3.7+
+- Flask
+- Numpy
+- SciPy
+- (Opcional) Cualquier otra librería mencionada en tus ficheros.
 
 ```bash pip install -r requirements.txt```
 
@@ -33,8 +31,9 @@ Asigna repartidores a viajes sin considerar zonas diferenciadas.
 La asignación se realiza basándose en la distancia geográfica mínima (calculo Haversine + algoritmo húngaro).
 
 Body de la petición
-	•	viajes: Lista de objetos JSON que describen los viajes.
-	•	reservas: Lista de objetos JSON que describen los repartidores (reservas).
+
+- viajes: Lista de objetos JSON que describen los viajes.
+- reservas: Lista de objetos JSON que describen los repartidores (reservas).
 
 Ejemplo:
 ```json 
@@ -98,10 +97,10 @@ Respuesta (ejemplo)
 ```
 
 **Campos de la respuesta:**
-	•	asignaciones: Lista de objetos que vinculan un viaje con una reserva, incluyendo la distancia calculada.
-	•	distancia_total_metros: Suma total de las distancias de pickeo.
-	•	distancia_promedio_idvehiculo_1: Promedio de las distancias para vehículos con idVehiculo = 1.
-	•	distancia_promedio_idvehiculo_4: Promedio de las distancias para vehículos con idVehiculo = 4.
+- **asignaciones**: Lista de objetos que vinculan un viaje con una reserva, incluyendo la distancia calculada.
+- **distancia_total_metros**: Suma total de las distancias de pickeo.
+- **distancia_promedio_idvehiculo_1**: Promedio de las distancias para vehículos con idVehiculo = 1.
+- **distancia_promedio_idvehiculo_4**: Promedio de las distancias para vehículos con idVehiculo = 4.
 
 *2. POST /asignar_repas_zonas*
 
@@ -111,21 +110,23 @@ Cada viaje y cada reserva tienen un campo idDireccion que se utiliza para agrupa
 Además, aquí se permite establecer la distancia máxima permitida (en metros) para cada tipo de vehículo.
 
 Body de la petición
-	•	viajes: Lista de objetos JSON que describen los viajes, con:
-	•	id
-	•	idDireccion
-	•	latitudOrigen
-	•	longitudOrigen
-	•	(otros campos requeridos)
-	•	reservas: Lista de objetos JSON que describen los repartidores (reservas), con:
-	•	id
-	•	idVehiculo
-	•	idDireccion
-	•	latitud
-	•	longitud
-	•	(otros campos requeridos)
-	•	DistanciaMaximaVehiculo1: Distancia máxima en metros para asignar viajes a un repartidor con idVehiculo = 1.
-	•	DistanciaMaximaVehiculo4: Distancia máxima en metros para asignar viajes a un repartidor con idVehiculo = 4.
+- **viajes**: Lista de objetos JSON que describen los viajes, con:
+  - **id**
+  - **idDireccion**
+  - **latitudOrigen**
+  - **longitudOrigen**
+  - *(otros campos requeridos)*
+  
+- **reservas**: Lista de objetos JSON que describen los repartidores (reservas), con:
+  - **id**
+  - **idVehiculo**
+  - **idDireccion**
+  - **latitud**
+  - **longitud**
+  - *(otros campos requeridos)*
+  
+- **DistanciaMaximaVehiculo1**: Distancia máxima en metros para asignar viajes a un repartidor con **idVehiculo = 1**.
+- **DistanciaMaximaVehiculo4**: Distancia máxima en metros para asignar viajes a un repartidor con **idVehiculo = 4**.
 
 Ejemplo de body:
 ```json
@@ -200,27 +201,21 @@ Respuesta (ejemplo)
   }
 }
 ```
-**Campos de la respuesta**:
-	•	asignaciones: Lista de objetos que vinculan un viaje con una reserva.
-	•	El campo "$id" en este ejemplo concatena idDireccion con la posición de la asignación ("1-1", "2-2", etc.).
-	•	distancia_total_metros: Suma total de las distancias de todas las asignaciones.
-	•	distancia_promedio_idvehiculo_1 y distancia_promedio_idvehiculo_4: Promedio de distancias según el tipo de vehículo (1 o 4) a nivel global.
-	•	metricas_por_direccion:
-	•	distancia_total_metros: Suma de distancias en dicha dirección.
-	•	distancia_promedio_idvehiculo_1 y distancia_promedio_idvehiculo_4: Promedios de distancias para cada tipo de vehículo dentro de esa dirección específica.
+## Campos de la respuesta
+- **asignaciones**: Lista de objetos que vinculan un viaje con una reserva.
+- **$id**: En este ejemplo, concatena `idDireccion` con la posición de la asignación (por ejemplo, "1-1", "2-2", etc.).
+- **distancia_total_metros**: Suma total de las distancias de todas las asignaciones.
+- **distancia_promedio_idvehiculo_1** y **distancia_promedio_idvehiculo_4**: Promedio de distancias según el tipo de vehículo (1 o 4) a nivel global.
+- **metricas_por_direccion**:
+  - **distancia_total_metros**: Suma de distancias en dicha dirección.
+  - **distancia_promedio_idvehiculo_1** y **distancia_promedio_idvehiculo_4**: Promedios de distancias para cada tipo de vehículo dentro de esa dirección específica.
 
-Validaciones de Distancia Máxima
+## Validaciones de Distancia Máxima
+En este endpoint, si la distancia calculada entre una reserva y un viaje excede la distancia máxima permitida para el `idVehiculo` de esa reserva, esa combinación no se asignará (se penaliza para que el algoritmo la descarte).
 
-En este endpoint, si la distancia calculada entre una reserva y un viaje excede la distancia máxima permitida para el idVehiculo de esa reserva, esa combinación no se asignará (se penaliza para que el algoritmo la descarte).
-
-Consideraciones Adicionales
-	•	Asegúrate de que DistanciaMaximaVehiculo1 y DistanciaMaximaVehiculo4 sean valores numéricos (float/int).
-	•	Si un repartidor tiene un idVehiculo distinto de 1 o 4, el comportamiento puede variar según la implementación (ej. sin restricción o con un valor “infinito” por defecto).
-	•	Puedes usar herramientas como Postman o cURL para probar los endpoints.
+## Consideraciones Adicionales
+- Asegúrate de que **DistanciaMaximaVehiculo1** y **DistanciaMaximaVehiculo4** sean valores numéricos (float/int).
+- Si un repartidor tiene un `idVehiculo` distinto de 1 o 4, el comportamiento puede variar según la implementación (por ejemplo, sin restricción o con un valor “infinito” por defecto).
+- Puedes usar herramientas como **Postman** o **cURL** para probar los endpoints.
 
 ¡Listo! Con estos cambios, la funcionalidad de distancia máxima de asignación y la forma de consumir los endpoints quedan debidamente documentadas.
-
-Consideraciones Adicionales
-	•	Asegúrate de que DistanciaMaximaVehiculo1 y DistanciaMaximaVehiculo4 sean valores numéricos (float/int).
-	•	Si un repartidor tiene un idVehiculo distinto de 1 o 4, el comportamiento puede variar según la implementación (ej. sin restricción o con un valor “infinito” por defecto).
-	•	Puedes usar herramientas como Postman o cURL para probar los endpoints.
