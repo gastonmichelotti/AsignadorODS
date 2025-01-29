@@ -122,75 +122,87 @@ def asignar_repas_envios_zonas(viajes, reservas):
         - "distancia_promedio_idvehiculo_4": Distancia promedio de las asignaciones para el vehículo con id 4.
     """
 
-    # Crear diccionarios de grupos
-    grupos_viajes = defaultdict(list)
-    grupos_reservas = defaultdict(list)
-    
-    for viaje in viajes:
-        grupos_viajes[viaje['idDireccion']].append(viaje)
-    
-    for reserva in reservas:
-        grupos_reservas[reserva['idDireccion']].append(reserva)
-    
-    # 2. Procesar cada grupo común
+    # 1. Estructuras para métricas
     resultado_final = {
         "asignaciones": [],
         "distancia_total_metros": 0,
         "distancia_promedio_idvehiculo_1": 0,
-        "distancia_promedio_idvehiculo_4": 0
+        "distancia_promedio_idvehiculo_4": 0,
+        "metricas_por_direccion": {}  # Nuevo campo
     }
-    
-    # Acumuladores para promedios
-    total_dist_1 = 0
-    count_1 = 0
-    total_dist_4 = 0
-    count_4 = 0
-    
-    # Iterar sobre direcciones comunes
-    for id_dir in set(grupos_viajes.keys()) & set(grupos_reservas.keys()):
-        # Obtener subconjuntos
+
+    # 2. Diccionario para acumular métricas por dirección
+    metricas_por_dir = defaultdict(lambda: {
+        'distancia_total': 0,
+        'suma_1': 0,
+        'count_1': 0,
+        'suma_4': 0,
+        'count_4': 0
+    })
+
+    # 3. Agrupar por dirección
+    grupos_viajes = defaultdict(list)
+    for viaje in viajes:
+        grupos_viajes[viaje['idDireccion']].append(viaje)
+
+    grupos_reservas = defaultdict(list)
+    for reserva in reservas:
+        grupos_reservas[reserva['idDireccion']].append(reserva)
+
+    # 4. Procesar cada dirección común
+    for id_dir in set(grupos_viajes) & set(grupos_reservas):
         sub_viajes = grupos_viajes[id_dir]
         sub_reservas = grupos_reservas[id_dir]
+
+        matriz = matriz_distancias_haversine(sub_reservas, sub_viajes)
+        row_ind, col_ind = linear_sum_assignment(matriz)
         
-        # 3. Ejecutar asignación para el subgrupo
-        matriz_distancias = matriz_distancias_haversine(sub_reservas, sub_viajes)
-        filas_ind, columnas_ind = linear_sum_assignment(matriz_distancias)
-        
-        # Procesar asignaciones (similar al código original)
-        for idx in range(min(len(filas_ind), len(columnas_ind))):
-            i = filas_ind[idx]
-            j = columnas_ind[idx]
-            distancia = float(matriz_distancias[i, j])
-            repa = sub_reservas[i]
+        # 5. Procesar asignaciones de esta dirección
+        for i, j in zip(row_ind, col_ind):
+            distancia = matriz[i, j]
+            reserva = sub_reservas[i]
             viaje = sub_viajes[j]
-            
-            # Acumular en resultado final
+
+            # Actualizar métricas globales
+            resultado_final["distancia_total_metros"] += distancia
+            if reserva['idVehiculo'] == 1:
+                resultado_final["distancia_promedio_idvehiculo_1"] += distancia
+                metricas_por_dir[id_dir]['suma_1'] += distancia
+                metricas_por_dir[id_dir]['count_1'] += 1
+            elif reserva['idVehiculo'] == 4:
+                resultado_final["distancia_promedio_idvehiculo_4"] += distancia
+                metricas_por_dir[id_dir]['suma_4'] += distancia
+                metricas_por_dir[id_dir]['count_4'] += 1
+
+            # Actualizar métricas de la dirección
+            metricas_por_dir[id_dir]['distancia_total'] += distancia
+
+            # Añadir asignación
             resultado_final["asignaciones"].append({
-                "$id": f"{id_dir}-{idx}",
+                "$id": f"{id_dir}-{len(resultado_final['asignaciones'])}",
                 "IdViaje": viaje['id'],
-                "IdReserva": repa['id'],
-                "IdDireccion": viaje['idDireccion'],
+                "IdReserva": reserva['id'],
                 "DistanciaPickeo": round(distancia, 2),
                 "Coeficiente": round(distancia, 2)
             })
-            
-            # Acumular distancias
-            resultado_final["distancia_total_metros"] += distancia
-            
-            # Acumular para promedios
-            if repa['idVehiculo'] == 1:
-                total_dist_1 += distancia
-                count_1 += 1
-            elif repa['idVehiculo'] == 4:
-                total_dist_4 += distancia
-                count_4 += 1
-    
-    # 4. Calcular promedios finales
+
+    # 6. Calcular promedios y formatear
+    # Globales
+    total_1 = sum(m['suma_1'] for m in metricas_por_dir.values())
+    count_1 = sum(m['count_1'] for m in metricas_por_dir.values())
+    total_4 = sum(m['suma_4'] for m in metricas_por_dir.values())
+    count_4 = sum(m['count_4'] for m in metricas_por_dir.values())
+
     resultado_final["distancia_total_metros"] = round(resultado_final["distancia_total_metros"], 2)
-    
-    if count_1 > 0:
-        resultado_final["distancia_promedio_idvehiculo_1"] = round(total_dist_1 / count_1, 2)
-    if count_4 > 0:
-        resultado_final["distancia_promedio_idvehiculo_4"] = round(total_dist_4 / count_4, 2)
-    
+    resultado_final["distancia_promedio_idvehiculo_1"] = round(total_1 / count_1, 2) if count_1 > 0 else 0
+    resultado_final["distancia_promedio_idvehiculo_4"] = round(total_4 / count_4, 2) if count_4 > 0 else 0
+
+    # Por dirección
+    for id_dir, metrics in metricas_por_dir.items():
+        resultado_final["metricas_por_direccion"][id_dir] = {
+            "distancia_total_metros": round(metrics['distancia_total'], 2),
+            "distancia_promedio_idvehiculo_1": round(metrics['suma_1'] / metrics['count_1'], 2) if metrics['count_1'] > 0 else 0,
+            "distancia_promedio_idvehiculo_4": round(metrics['suma_4'] / metrics['count_4'], 2) if metrics['count_4'] > 0 else 0
+        }
+
     return resultado_final
