@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from PMAsignador import asignar_repas_envios_simple
+from PMAsignador import asignar_repas_envios_simple, asignar_repas_envios_zonas
 
 app = Flask(__name__)
 
@@ -24,6 +24,34 @@ def asignar_repas():
         
         # Llamar a la función
         resultado = asignar_repas_envios_simple(viajes, reservas)
+        
+        # Devolver el resultado como JSON
+        return jsonify(resultado)
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/asignar_repas_zonas', methods=['POST'])
+def asignar_repas():
+    try:
+        data = request.json
+        if not data:
+            return jsonify({"error": "No se proporcionaron datos"}), 400
+        
+        # Extraer los parámetros de la solicitud
+        viajes = data.get('viajes')
+        reservas = data.get('reservas')
+        
+        # Validar que los parámetros no sean None
+        if viajes is None or reservas is None:
+            return jsonify({"error": "Faltan parámetros 'viajes' o 'reservas'"}), 400
+        
+        # Validar que los parámetros sean listas
+        if not isinstance(viajes, list) or not isinstance(reservas, list):
+            return jsonify({"error": "'viajes' y 'reservas' deben ser listas"}), 400
+        
+        # Llamar a la función
+        resultado = asignar_repas_envios_zonas(viajes, reservas)
         
         # Devolver el resultado como JSON
         return jsonify(resultado)

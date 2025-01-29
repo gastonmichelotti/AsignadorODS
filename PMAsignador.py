@@ -169,6 +169,7 @@ def asignar_repas_envios_zonas(viajes, reservas):
                 "$id": f"{id_dir}-{idx}",
                 "IdViaje": viaje['id'],
                 "IdReserva": repa['id'],
+                "IdDireccion": viaje['idDireccion'],
                 "DistanciaPickeo": round(distancia, 2),
                 "Coeficiente": round(distancia, 2)
             })
