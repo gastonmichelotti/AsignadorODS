@@ -25,7 +25,7 @@ Esto levantará un servidor en el puerto 5005 (por defecto).
 
 ### Endpoints
 
-*1. POST /asignar_repas*
+#### *1. POST /asignar_repas*
 
 Asigna repartidores a viajes sin considerar zonas diferenciadas.
 La asignación se realiza basándose en la distancia geográfica mínima (calculo Haversine + algoritmo húngaro).
@@ -102,7 +102,7 @@ Respuesta (ejemplo)
 - **distancia_promedio_idvehiculo_1**: Promedio de las distancias para vehículos con idVehiculo = 1.
 - **distancia_promedio_idvehiculo_4**: Promedio de las distancias para vehículos con idVehiculo = 4.
 
-*2. POST /asignar_repas_zonas*
+#### *2. POST /asignar_repas_zonas*
 
 Asigna repartidores a viajes considerando zonas (direcciones) y restricciones de distancia máxima.
 
