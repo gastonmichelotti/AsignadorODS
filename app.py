@@ -3,7 +3,7 @@ from PMAsignador import asignar_repas_envios_simple, asignar_repas_envios_zonas
 
 app = Flask(__name__)
 
-@app.route('/asignar_repas', methods=['POST'])
+@app.route('/asignar_repas', methods=['POST'], endpoint='asignar_repas_endpoint')
 def asignar_repas():
     try:
         data = request.json
@@ -31,8 +31,8 @@ def asignar_repas():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/asignar_repas_zonas', methods=['POST'])
-def asignar_repas():
+@app.route('/asignar_repas_zonas', methods=['POST'], endpoint='asignar_repas_zonas_endpoint')
+def asignar_repas_zonas():
     try:
         data = request.json
         if not data:
@@ -71,3 +71,7 @@ def asignar_repas():
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(port=5005, debug=True)

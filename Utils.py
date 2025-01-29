@@ -1,4 +1,4 @@
-# Función para calcular la matriz de distancias Haversine
+import numpy as np# Función para calcular la matriz de distancias Haversine
 def matriz_distancias_haversine(repas, envios):
     # Extraer coordenadas
     lat1 = np.radians(np.array([repa['latitud'] for repa in repas]))[:, np.newaxis]
