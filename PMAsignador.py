@@ -1,5 +1,11 @@
+import numpy as np
+from scipy.optimize import linear_sum_assignment
+import json
+from collections import defaultdict
+from Utils import matriz_distancias_haversine
+
 def asignar_repas_envios_simple(viajes, reservas):
-    
+   
     """
     Asigna repartidores a envíos utilizando minimización de distancias geográficas.
 
@@ -13,28 +19,6 @@ def asignar_repas_envios_simple(viajes, reservas):
     - distancia_promedio_idvehiculo_1: Promedio de las distancias de asignación para idVehiculo = 1.
     - distancia_promedio_idvehiculo_4: Promedio de las distancias de asignación para idVehiculo = 4.
     """
-    import numpy as np
-    from scipy.optimize import linear_sum_assignment
-    import json
-
-    # Función para calcular la matriz de distancias Haversine
-    def matriz_distancias_haversine(repas, envios):
-        # Extraer coordenadas
-        lat1 = np.radians(np.array([repa['latitud'] for repa in repas]))[:, np.newaxis]
-        lon1 = np.radians(np.array([repa['longitud'] for repa in repas]))[:, np.newaxis]
-        lat2 = np.radians(np.array([envio['latitudOrigen'] for envio in envios]))[np.newaxis, :]
-        lon2 = np.radians(np.array([envio['longitudOrigen'] for envio in envios]))[np.newaxis, :]
-
-        dlat = lat2 - lat1
-        dlon = lon2 - lon1
-
-        a = np.sin(dlat / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2) ** 2
-        c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
-
-        R = 6371000  # Radio de la Tierra en metros
-        distancia = R * c
-        return distancia  # Retorna la matriz de distancias en metros
-
     # Asignar IDs
     ids_repas = [reserva['id'] for reserva in reservas]
     ids_envios = [viaje['id'] for viaje in viajes]
@@ -120,3 +104,92 @@ def asignar_repas_envios_simple(viajes, reservas):
         "distancia_promedio_idvehiculo_4": round(distancia_promedio_idvehiculo_4, 2)
     }
     return resultado
+
+
+def asignar_repas_envios_zonas(viajes, reservas):
+    """
+    Asigna repartidores a envíos basándose en zonas geográficas comunes entre viajes y reservas.
+
+    Parámetros:
+    viajes (list): Lista de diccionarios que representan los viajes, cada uno con información como id, idDireccion, latitudOrigen, longitudOrigen, etc.
+    reservas (list): Lista de diccionarios que representan las reservas, cada uno con información como id, idDireccion, latitud, longitud, etc.
+
+    Retorna:
+    dict: Un diccionario que contiene:
+        - "asignaciones": Lista de asignaciones realizadas.
+        - "distancia_total_metros": Distancia total acumulada de todas las asignaciones.
+        - "distancia_promedio_idvehiculo_1": Distancia promedio de las asignaciones para el vehículo con id 1.
+        - "distancia_promedio_idvehiculo_4": Distancia promedio de las asignaciones para el vehículo con id 4.
+    """
+
+    # Crear diccionarios de grupos
+    grupos_viajes = defaultdict(list)
+    grupos_reservas = defaultdict(list)
+    
+    for viaje in viajes:
+        grupos_viajes[viaje['idDireccion']].append(viaje)
+    
+    for reserva in reservas:
+        grupos_reservas[reserva['idDireccion']].append(reserva)
+    
+    # 2. Procesar cada grupo común
+    resultado_final = {
+        "asignaciones": [],
+        "distancia_total_metros": 0,
+        "distancia_promedio_idvehiculo_1": 0,
+        "distancia_promedio_idvehiculo_4": 0
+    }
+    
+    # Acumuladores para promedios
+    total_dist_1 = 0
+    count_1 = 0
+    total_dist_4 = 0
+    count_4 = 0
+    
+    # Iterar sobre direcciones comunes
+    for id_dir in set(grupos_viajes.keys()) & set(grupos_reservas.keys()):
+        # Obtener subconjuntos
+        sub_viajes = grupos_viajes[id_dir]
+        sub_reservas = grupos_reservas[id_dir]
+        
+        # 3. Ejecutar asignación para el subgrupo
+        matriz_distancias = matriz_distancias_haversine(sub_reservas, sub_viajes)
+        filas_ind, columnas_ind = linear_sum_assignment(matriz_distancias)
+        
+        # Procesar asignaciones (similar al código original)
+        for idx in range(min(len(filas_ind), len(columnas_ind))):
+            i = filas_ind[idx]
+            j = columnas_ind[idx]
+            distancia = float(matriz_distancias[i, j])
+            repa = sub_reservas[i]
+            viaje = sub_viajes[j]
+            
+            # Acumular en resultado final
+            resultado_final["asignaciones"].append({
+                "$id": f"{id_dir}-{idx}",
+                "IdViaje": viaje['id'],
+                "IdReserva": repa['id'],
+                "DistanciaPickeo": round(distancia, 2),
+                "Coeficiente": round(distancia, 2)
+            })
+            
+            # Acumular distancias
+            resultado_final["distancia_total_metros"] += distancia
+            
+            # Acumular para promedios
+            if repa['idVehiculo'] == 1:
+                total_dist_1 += distancia
+                count_1 += 1
+            elif repa['idVehiculo'] == 4:
+                total_dist_4 += distancia
+                count_4 += 1
+    
+    # 4. Calcular promedios finales
+    resultado_final["distancia_total_metros"] = round(resultado_final["distancia_total_metros"], 2)
+    
+    if count_1 > 0:
+        resultado_final["distancia_promedio_idvehiculo_1"] = round(total_dist_1 / count_1, 2)
+    if count_4 > 0:
+        resultado_final["distancia_promedio_idvehiculo_4"] = round(total_dist_4 / count_4, 2)
+    
+    return resultado_final
