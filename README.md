@@ -1,178 +1,226 @@
-# AsignadorODS
+A continuación se muestra un ejemplo de cómo podrías actualizar tu archivo README.md para documentar las nuevas funcionalidades y los formatos de body correspondientes para los dos endpoints: asignar_repas y asignar_repas_zonas, incluyendo la nueva funcionalidad de DistanciaMáximaDeAsignación por vehículo (idVehiculo = 1 y 4).
 
-Este proyecto implementa un sistema de asignación de repartidores a envíos utilizando clustering y optimización de distancias geográficas. Se utiliza un algoritmo húngaro para la asignación óptima, y la aplicación está desarrollada en Python con una API Flask.
+## Asignador de Repartidores
 
-## Funcionalidades
+Este proyecto utiliza Flask para exponer endpoints que asignan repartidores a viajes bajo distintas lógicas:
+	1.	Asignación simple (sin considerar zonas), basado en la minimización de distancia.
+	2.	Asignación por zonas (considera la misma dirección de reparto para agrupar y asignar), con posibilidad de restringir la distancia máxima en función del tipo de vehículo.
 
-- **Asignación de Repartidores a Envíos:** 
-  - El sistema genera asignaciones óptimas basadas en distancias geográficas calculadas con la fórmula de Haversine.
-- **API Flask:** 
-  - La API permite realizar las asignaciones a través de un EndPoint, devolviendo las asignaciones en formato JSON.
-- **Soporte multiplataforma:** 
-  - Inicia y detiene el proceso de la API en macOS y Windows con scripts de automatización.
+### Requerimientos
+	•	Python 3.7+
+	•	Flask
+	•	Numpy
+	•	SciPy
+	•	(Opcional) Cualquier otra librería mencionada en tus ficheros.
 
-## Requisitos
+Instalación de dependencias (ejemplo):
 
-- Python 3.x instalado
-- Git instalado para clonar el repositorio
-- Virtualenv o venv para entornos virtuales
+```bash pip install -r requirements.txt```
 
-## WINDOWS
+### Ejecutar el proyecto
 
-- Inicia la api haciendo click en el archivo 'iniciarAsignador.bat'
-- Detiene la api haciendo click en el archivo 'detenerAsignador.bat'
+Para correr la aplicación localmente:
 
-## MACOS
+```bash python app.py```
 
-- Inicia la api haciendo click en el archivo 'IniciarASignador.app'
-- Detiene la api haciendo click en el archivo 'DetenerAsignador.app'
+Esto levantará un servidor en el puerto 5005 (por defecto).
 
-## ENDPOINT
+### Endpoints
 
-URL:  http://localhost:5005/asignar_repas o http://127.0.0.1:5005/asignar_repas
+*1. POST /asignar_repas*
 
-METODO: POST
+Asigna repartidores a viajes sin considerar zonas diferenciadas.
+La asignación se realiza basándose en la distancia geográfica mínima (calculo Haversine + algoritmo húngaro).
 
-HEADERS:
-- Content-Type: application/json
+Body de la petición
+	•	viajes: Lista de objetos JSON que describen los viajes.
+	•	reservas: Lista de objetos JSON que describen los repartidores (reservas).
 
-EJEMPLO DE BODY:
-```json
+Ejemplo:
+```json 
 {
   "viajes": [
     {
-      "distancia": 1931.27,
-      "id": 1,
-      "idUsuario": 16556,
-      "latitudOrigen": -34.58567,
-      "longitudOrigen": -58.46624,
-      "idDireccion": 30635
+      "id": 101,
+      "latitudOrigen": -34.603722,
+      "longitudOrigen": -58.381592
+      // otros campos...
     },
     {
-      "distancia": 838.94,
-      "id": 2,
-      "idUsuario": 16556,
-      "latitudOrigen": -34.62064,
-      "longitudOrigen": -58.46504,
-      "idDireccion": 30635
-    },
-    {
-      "distancia": 606.69,
-      "id": 3,
-      "idUsuario": 16556,
-      "latitudOrigen": -34.61047,
-      "longitudOrigen": -58.40599,
-      "idDireccion": 30635
-    },
-    {
-      "distancia": 1955.25,
-      "id": 4,
-      "idUsuario": 16556,
-      "latitudOrigen": -34.58421,
-      "longitudOrigen": -58.43667,
-      "idDireccion": 30635
-    },
-    {
-      "distancia": 984.95,
-      "id": 5,
-      "idUsuario": 16556,
-      "latitudOrigen": -34.59268,
-      "longitudOrigen": -58.45499,
-      "idDireccion": 30635
+      "id": 102,
+      "latitudOrigen": -34.600000,
+      "longitudOrigen": -58.370000
+      // otros campos...
     }
   ],
   "reservas": [
     {
-      "idDireccion": 30635,
-      "idUsuario": 23317,
-      "id": 1,
-      "latitud": -34.57875,
-      "longitud": -58.4574,
-      "idVehiculo": 4,
-      "radioMaximoAsignacion": 3000
-    },
-    {
-      "idDireccion": 30635,
-      "idUsuario": 23317,
-      "id": 2,
-      "latitud": -34.61499,
-      "longitud": -58.47551,
+      "id": 201,
       "idVehiculo": 1,
-      "radioMaximoAsignacion": 8000
+      "latitud": -34.603000,
+      "longitud": -58.381000
+      // otros campos...
     },
     {
-      "idDireccion": 30635,
-      "idUsuario": 23317,
-      "id": 3,
-      "latitud": -34.59987,
-      "longitud": -58.41337,
+      "id": 202,
       "idVehiculo": 4,
-      "radioMaximoAsignacion": 3000
-    },
-    {
-      "idDireccion": 30635,
-      "idUsuario": 23317,
-      "id": 4,
-      "latitud": -34.5804,
-      "longitud": -58.42911,
-      "idVehiculo": 4,
-      "radioMaximoAsignacion": 3000
-    },
-    {
-      "idDireccion": 30635,
-      "idUsuario": 23317,
-      "id": 5,
-      "latitud": -34.59781,
-      "longitud": -58.46099,
-      "idVehiculo": 1,
-      "radioMaximoAsignacion": 8000
+      "latitud": -34.601000,
+      "longitud": -58.370500
+      // otros campos...
     }
   ]
 }
 ```
 
-EJEMPLO DE RESPUESTA:
-``` json
+Respuesta (ejemplo)
+```json
 {
-    "asignaciones": [
-        {
-            "$id": "1",
-            "Coeficiente": 1116.7,
-            "DistanciaPickeo": 1116.7,
-            "IdReserva": 1,
-            "IdViaje": 1
-        },
-        {
-            "$id": "2",
-            "Coeficiente": 1145.71,
-            "DistanciaPickeo": 1145.71,
-            "IdReserva": 2,
-            "IdViaje": 2
-        },
-        {
-            "$id": "3",
-            "Coeficiente": 1358.48,
-            "DistanciaPickeo": 1358.48,
-            "IdReserva": 3,
-            "IdViaje": 3
-        },
-        {
-            "$id": "4",
-            "Coeficiente": 811.47,
-            "DistanciaPickeo": 811.47,
-            "IdReserva": 4,
-            "IdViaje": 4
-        },
-        {
-            "$id": "5",
-            "Coeficiente": 791.84,
-            "DistanciaPickeo": 791.84,
-            "IdReserva": 5,
-            "IdViaje": 5
-        }
-    ],
-    "distancia_promedio_idvehiculo_1": 968.78,
-    "distancia_promedio_idvehiculo_4": 1095.55,
-    "distancia_total_metros": 5224.21
+  "asignaciones": [
+    {
+      "$id": "1",
+      "IdViaje": 101,
+      "IdReserva": 201,
+      "DistanciaPickeo": 68.61,
+      "Coeficiente": 68.61
+    },
+    {
+      "$id": "2",
+      "IdViaje": 102,
+      "IdReserva": 202,
+      "DistanciaPickeo": 35.42,
+      "Coeficiente": 35.42
+    }
+  ],
+  "distancia_total_metros": 104.03,
+  "distancia_promedio_idvehiculo_1": 68.61,
+  "distancia_promedio_idvehiculo_4": 35.42
 }
 ```
+
+**Campos de la respuesta:**
+	•	asignaciones: Lista de objetos que vinculan un viaje con una reserva, incluyendo la distancia calculada.
+	•	distancia_total_metros: Suma total de las distancias de pickeo.
+	•	distancia_promedio_idvehiculo_1: Promedio de las distancias para vehículos con idVehiculo = 1.
+	•	distancia_promedio_idvehiculo_4: Promedio de las distancias para vehículos con idVehiculo = 4.
+
+*2. POST /asignar_repas_zonas*
+
+Asigna repartidores a viajes considerando zonas (direcciones) y restricciones de distancia máxima.
+
+Cada viaje y cada reserva tienen un campo idDireccion que se utiliza para agruparlos en la misma “zona” antes de asignar.
+Además, aquí se permite establecer la distancia máxima permitida (en metros) para cada tipo de vehículo.
+
+Body de la petición
+	•	viajes: Lista de objetos JSON que describen los viajes, con:
+	•	id
+	•	idDireccion
+	•	latitudOrigen
+	•	longitudOrigen
+	•	(otros campos requeridos)
+	•	reservas: Lista de objetos JSON que describen los repartidores (reservas), con:
+	•	id
+	•	idVehiculo
+	•	idDireccion
+	•	latitud
+	•	longitud
+	•	(otros campos requeridos)
+	•	DistanciaMaximaVehiculo1: Distancia máxima en metros para asignar viajes a un repartidor con idVehiculo = 1.
+	•	DistanciaMaximaVehiculo4: Distancia máxima en metros para asignar viajes a un repartidor con idVehiculo = 4.
+
+Ejemplo de body:
+```json
+{
+  "viajes": [
+    {
+      "id": 101,
+      "idDireccion": 1,
+      "latitudOrigen": -34.603722,
+      "longitudOrigen": -58.381592
+    },
+    {
+      "id": 102,
+      "idDireccion": 2,
+      "latitudOrigen": -34.600000,
+      "longitudOrigen": -58.370000
+    }
+  ],
+  "reservas": [
+    {
+      "id": 201,
+      "idVehiculo": 1,
+      "idDireccion": 1,
+      "latitud": -34.603000,
+      "longitud": -58.381000
+    },
+    {
+      "id": 202,
+      "idVehiculo": 4,
+      "idDireccion": 2,
+      "latitud": -34.601000,
+      "longitud": -58.370500
+    }
+  ],
+  "DistanciaMaximaVehiculo1": 3000,
+  "DistanciaMaximaVehiculo4": 5000
+}
+```
+Respuesta (ejemplo)
+```json
+{
+  "asignaciones": [
+    {
+      "$id": "1-1",
+      "IdViaje": 101,
+      "IdReserva": 201,
+      "DistanciaPickeo": 68.61,
+      "Coeficiente": 68.61
+    },
+    {
+      "$id": "2-2",
+      "IdViaje": 102,
+      "IdReserva": 202,
+      "DistanciaPickeo": 55.3,
+      "Coeficiente": 55.3
+    }
+  ],
+  "distancia_total_metros": 123.91,
+  "distancia_promedio_idvehiculo_1": 68.61,
+  "distancia_promedio_idvehiculo_4": 55.3,
+  "metricas_por_direccion": {
+    "1": {
+      "distancia_total_metros": 68.61,
+      "distancia_promedio_idvehiculo_1": 68.61,
+      "distancia_promedio_idvehiculo_4": 0
+    },
+    "2": {
+      "distancia_total_metros": 55.3,
+      "distancia_promedio_idvehiculo_1": 0,
+      "distancia_promedio_idvehiculo_4": 55.3
+    }
+  }
+}
+```
+**Campos de la respuesta**:
+	•	asignaciones: Lista de objetos que vinculan un viaje con una reserva.
+	•	El campo "$id" en este ejemplo concatena idDireccion con la posición de la asignación ("1-1", "2-2", etc.).
+	•	distancia_total_metros: Suma total de las distancias de todas las asignaciones.
+	•	distancia_promedio_idvehiculo_1 y distancia_promedio_idvehiculo_4: Promedio de distancias según el tipo de vehículo (1 o 4) a nivel global.
+	•	metricas_por_direccion:
+	•	distancia_total_metros: Suma de distancias en dicha dirección.
+	•	distancia_promedio_idvehiculo_1 y distancia_promedio_idvehiculo_4: Promedios de distancias para cada tipo de vehículo dentro de esa dirección específica.
+
+Validaciones de Distancia Máxima
+
+En este endpoint, si la distancia calculada entre una reserva y un viaje excede la distancia máxima permitida para el idVehiculo de esa reserva, esa combinación no se asignará (se penaliza para que el algoritmo la descarte).
+
+Consideraciones Adicionales
+	•	Asegúrate de que DistanciaMaximaVehiculo1 y DistanciaMaximaVehiculo4 sean valores numéricos (float/int).
+	•	Si un repartidor tiene un idVehiculo distinto de 1 o 4, el comportamiento puede variar según la implementación (ej. sin restricción o con un valor “infinito” por defecto).
+	•	Puedes usar herramientas como Postman o cURL para probar los endpoints.
+
+¡Listo! Con estos cambios, la funcionalidad de distancia máxima de asignación y la forma de consumir los endpoints quedan debidamente documentadas.
+
+Consideraciones Adicionales
+	•	Asegúrate de que DistanciaMaximaVehiculo1 y DistanciaMaximaVehiculo4 sean valores numéricos (float/int).
+	•	Si un repartidor tiene un idVehiculo distinto de 1 o 4, el comportamiento puede variar según la implementación (ej. sin restricción o con un valor “infinito” por defecto).
+	•	Puedes usar herramientas como Postman o cURL para probar los endpoints.
