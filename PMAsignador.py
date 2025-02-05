@@ -106,7 +106,7 @@ def asignar_repas_envios_simple(viajes, reservas):
     return resultado
 
 
-def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4):
+def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_max_entrega_v4):
     
     """
     Asigna repartidores a envíos basándose en zonas geográficas comunes entre viajes y reservas,
@@ -117,7 +117,8 @@ def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4):
       - reservas (list): Lista de diccionarios con info de los repartidores.
       - dist_max_v1 (float): Distancia máxima de asignación en metros para vehículo con id=1.
       - dist_max_v4 (float): Distancia máxima de asignación en metros para vehículo con id=4.
-
+      - dist_max_entrega_v4 (float): Distancia máxima para entrega en metros para vehículos con id=4.
+    
     Retorna:
       dict con:
         - "asignaciones": Lista de asignaciones (diccionarios con IdViaje, IdReserva, DistanciaPickeo, etc.).
@@ -175,12 +176,17 @@ def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4):
                 elif vehiculo == 4:
                     dist_max = dist_max_v4
                 else:
-                    # Si se desconoce el vehículo, podrías decidir asignar sin restricción o poner un valor grande
-                    dist_max = 999999999
+                    dist_max = 999999999  # O un valor adecuado para vehículos no contemplados
 
-                # Si excede la distancia máxima, penalizar con un valor grande
+                # Penalizar si la distancia de la asignación excede la permitida para el vehículo
                 if dist > dist_max:
                     matriz[i, j] = 999999999  # costo muy alto para evitar asignación
+
+                # NUEVA REGLA:
+                # Si el viaje tiene una distancia (viaje['distancia']) mayor a dist_max_entrega_v4
+                # y la reserva es de vehículo 4, se penaliza la asignación para evitar que se asigne.
+                if vehiculo == 4 and viaje['distancia'] > dist_max_entrega_v4:
+                    matriz[i, j] = 999999999
 
         # 5. Resolver la asignación con algoritmo húngaro
         row_ind, col_ind = linear_sum_assignment(matriz)
@@ -190,7 +196,6 @@ def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4):
             distancia = matriz[i, j]
             # Si la distancia es muy grande, significa que no se debe asignar.
             if distancia >= 999999999:
-                # Se ignora esta asignación
                 continue
 
             reserva = sub_reservas[i]

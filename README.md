@@ -162,7 +162,8 @@ Ejemplo de body:
     }
   ],
   "DistanciaMaximaVehiculo1": 3000,
-  "DistanciaMaximaVehiculo4": 5000
+  "DistanciaMaximaVehiculo4": 5000,
+  "DistanciaMaximaEntregaVehiculo4": 3000
 }
 ```
 Respuesta (ejemplo)
