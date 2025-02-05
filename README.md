@@ -127,6 +127,7 @@ Body de la petición
   
 - **DistanciaMaximaVehiculo1**: Distancia máxima en metros para asignar viajes a un repartidor con **idVehiculo = 1**.
 - **DistanciaMaximaVehiculo4**: Distancia máxima en metros para asignar viajes a un repartidor con **idVehiculo = 4**.
+- **DistanciaMaximaEntregaVehiculo4**: Distancia máxima en metros que tiene que tener un viaje de origen a desitno para que se asigne a un repartidor con **idVehiculo = 4**.
 
 Ejemplo de body:
 ```json
@@ -197,7 +198,8 @@ Respuesta (ejemplo)
     "2": {
       "distancia_total_metros": 55.3,
       "distancia_promedio_idvehiculo_1": 0,
-      "distancia_promedio_idvehiculo_4": 55.3
+      "distancia_promedio_idvehiculo_4": 55.3,
+      "CurrentTime": "2024-01-15T14:30:00"
     }
   }
 }

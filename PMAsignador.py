@@ -106,29 +106,52 @@ def asignar_repas_envios_simple(viajes, reservas):
     return resultado
 
 
-def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_max_entrega_v4):
-    
+from collections import defaultdict
+from scipy.optimize import linear_sum_assignment
+import numpy as np
+
+from collections import defaultdict
+from scipy.optimize import linear_sum_assignment
+import numpy as np
+
+from collections import defaultdict
+from scipy.optimize import linear_sum_assignment
+import numpy as np
+
+def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_max_entrega_v4, tiempo_actual):
     """
     Asigna repartidores a envíos basándose en zonas geográficas comunes entre viajes y reservas,
-    con la restricción de no asignar viajes cuya distancia supere la distancia máxima para el idVehiculo.
-    
-    Parámetros:
-      - viajes (list): Lista de diccionarios con info de los viajes.
-      - reservas (list): Lista de diccionarios con info de los repartidores.
-      - dist_max_v1 (float): Distancia máxima de asignación en metros para vehículo con id=1.
-      - dist_max_v4 (float): Distancia máxima de asignación en metros para vehículo con id=4.
-      - dist_max_entrega_v4 (float): Distancia máxima para entrega en metros para vehículos con id=4.
-    
-    Retorna:
-      dict con:
-        - "asignaciones": Lista de asignaciones (diccionarios con IdViaje, IdReserva, DistanciaPickeo, etc.).
-        - "distancia_total_metros": Distancia total acumulada de todas las asignaciones.
-        - "distancia_promedio_idvehiculo_1": Distancia promedio de las asignaciones para vehículo con id=1.
-        - "distancia_promedio_idvehiculo_4": Distancia promedio de las asignaciones para vehículo con id=4.
-        - "metricas_por_direccion": Métricas detalladas por cada idDireccion.
-    """
+    incorporando el factor antigüedad para definir el costo final de asignación.
 
-    # 1. Estructuras para métricas
+    Esta función utiliza dos matrices calculadas mediante la función 'matriz_distancias_haversine':
+      - Una matriz de distancias "puras" (distancia en línea recta entre el repartidor y el origen del envío).
+      - Una matriz de coeficientes que es el resultado de dividir la distancia por la antigüedad del envío.
+      
+    Se aplican validaciones y penalizaciones sobre la matriz de coeficientes utilizando la distancia real,
+    de forma que:
+      - Si la distancia real supera el límite permitido (según el tipo de vehículo), se penaliza la asignación.
+      - Para vehículos de tipo 4, si el valor de 'viaje["distancia"]' excede 'dist_max_entrega_v4', se penaliza.
+    
+    Los valores penalizados se asignan con un costo muy alto (999999999) para que no se escojan en la asignación.
+    Para las métricas se utiliza la distancia real (pura) de cada asignación.
+
+    Parámetros:
+      - viajes (list): Lista de diccionarios con la información de los envíos.
+      - reservas (list): Lista de diccionarios con la información de los repartidores.
+      - dist_max_v1 (float): Distancia máxima permitida para asignar un envío a un repartidor con idVehiculo == 1.
+      - dist_max_v4 (float): Distancia máxima permitida para asignar un envío a un repartidor con idVehiculo == 4.
+      - dist_max_entrega_v4 (float): Distancia máxima de entrega permitida para repartidores con idVehiculo == 4.
+      - tiempo_actual (datetime): Fecha y hora actuales para calcular la antigüedad de cada envío.
+
+    Retorna:
+      dict: Un diccionario que contiene:
+            - "asignaciones": Lista de asignaciones realizadas, cada una con los datos del envío, la reserva y las distancias.
+            - "distancia_total_metros": Suma total de las distancias reales (puras) de todas las asignaciones.
+            - "distancia_promedio_idvehiculo_1": Promedio de distancias para asignaciones realizadas a vehículos de tipo 1.
+            - "distancia_promedio_idvehiculo_4": Promedio de distancias para asignaciones realizadas a vehículos de tipo 4.
+            - "metricas_por_direccion": Métricas detalladas agrupadas por cada dirección (idDireccion).
+    """
+    # Inicializar el resultado final y estructuras para las métricas
     resultado_final = {
         "asignaciones": [],
         "distancia_total_metros": 0,
@@ -136,17 +159,15 @@ def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_
         "distancia_promedio_idvehiculo_4": 0,
         "metricas_por_direccion": {}
     }
-
-    # 2. Diccionario para acumular métricas por dirección
     metricas_por_dir = defaultdict(lambda: {
-        'distancia_total': 0,
-        'suma_1': 0,
-        'count_1': 0,
-        'suma_4': 0,
-        'count_4': 0
+        "distancia_total": 0,
+        "suma_1": 0,
+        "count_1": 0,
+        "suma_4": 0,
+        "count_4": 0
     })
 
-    # 3. Agrupar viajes y reservas por idDireccion
+    # Agrupar viajes y reservas por idDireccion
     grupos_viajes = defaultdict(list)
     for viaje in viajes:
         grupos_viajes[viaje['idDireccion']].append(viaje)
@@ -155,104 +176,123 @@ def asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_
     for reserva in reservas:
         grupos_reservas[reserva['idDireccion']].append(reserva)
 
-    # 4. Procesar cada dirección en común
+    # Procesar cada dirección que se encuentre en ambos grupos
     direcciones_comunes = set(grupos_viajes.keys()) & set(grupos_reservas.keys())
     for id_dir in direcciones_comunes:
         sub_viajes = grupos_viajes[id_dir]
         sub_reservas = grupos_reservas[id_dir]
 
-        # Calcular la matriz de distancias
-        matriz = matriz_distancias_haversine(sub_reservas, sub_viajes)
+        # Obtener ambas matrices:
+        #   - 'distancias_puras': contiene la distancia real (en metros) entre cada par (reserva, envío).
+        #   - 'matriz_coeficientes': es la matriz de costo que incorpora el factor antigüedad.
+        # Se asume que la función 'matriz_distancias_haversine' tiene el siguiente prototipo:
+        #     def matriz_distancias_haversine(repas, envios, tiempo_actual, return_both=False):
+        #         ...
+        #         if return_both:
+        #             return distancias_puras, coeficientes
+        #         else:
+        #             return coeficientes
+        distancias_puras, matriz_coeficientes = matriz_distancias_haversine(
+            sub_reservas, sub_viajes, tiempo_actual, return_both=True
+        )
 
-        # Para cada par (reserva, viaje), si excede la distancia máxima, asignamos un costo grande
+        # Aplicar validaciones y controles utilizando la distancia real
         for i, reserva in enumerate(sub_reservas):
             vehiculo = reserva['idVehiculo']
             for j, viaje in enumerate(sub_viajes):
-                dist = matriz[i, j]
-                
-                # Determinar distancia máxima según el idVehiculo
+                distancia_real = distancias_puras[i, j]
+
+                # Determinar la distancia máxima permitida según el tipo de vehículo
                 if vehiculo == 1:
-                    dist_max = dist_max_v1
+                    distancia_maxima = dist_max_v1
                 elif vehiculo == 4:
-                    dist_max = dist_max_v4
+                    distancia_maxima = dist_max_v4
                 else:
-                    dist_max = 999999999  # O un valor adecuado para vehículos no contemplados
+                    distancia_maxima = 999999999  # Valor muy alto para otros tipos de vehículos
 
-                # Penalizar si la distancia de la asignación excede la permitida para el vehículo
-                if dist > dist_max:
-                    matriz[i, j] = 999999999  # costo muy alto para evitar asignación
+                # Si la distancia real excede la permitida, se penaliza la celda en la matriz de coeficientes.
+                if distancia_real > distancia_maxima:
+                    matriz_coeficientes[i, j] = 999999999
 
-                # NUEVA REGLA:
-                # Si el viaje tiene una distancia (viaje['distancia']) mayor a dist_max_entrega_v4
-                # y la reserva es de vehículo 4, se penaliza la asignación para evitar que se asigne.
-                if vehiculo == 4 and viaje['distancia'] > dist_max_entrega_v4:
-                    matriz[i, j] = 999999999
+                # Regla adicional: para vehículos de tipo 4, si el envío tiene una 'distancia' mayor a 'dist_max_entrega_v4',
+                # se penaliza la asignación.
+                if vehiculo == 4 and viaje.get('distancia', 0) > dist_max_entrega_v4:
+                    matriz_coeficientes[i, j] = 999999999
 
-        # 5. Resolver la asignación con algoritmo húngaro
-        row_ind, col_ind = linear_sum_assignment(matriz)
+        # Resolver el problema de asignación utilizando el algoritmo húngaro sobre la matriz de coeficientes final
+        filas_ind, columnas_ind = linear_sum_assignment(matriz_coeficientes)
 
-        # 6. Procesar las asignaciones reales (ignorando las "penalizadas")
-        for i, j in zip(row_ind, col_ind):
-            distancia = matriz[i, j]
-            # Si la distancia es muy grande, significa que no se debe asignar.
-            if distancia >= 999999999:
+        # Procesar las asignaciones válidas
+        for idx in range(len(filas_ind)):
+            i = filas_ind[idx]
+            j = columnas_ind[idx]
+            costo_asignacion = matriz_coeficientes[i, j]
+            # Si el costo es penalizado, se ignora la asignación
+            if costo_asignacion >= 999999999:
                 continue
 
-            reserva = sub_reservas[i]
-            viaje = sub_viajes[j]
+            reserva_asignada = sub_reservas[i]
+            viaje_asignado = sub_viajes[j]
+            # Se utiliza la distancia real para las métricas y detalles de la asignación
+            distancia_real = distancias_puras[i, j]
 
-            resultado_final["distancia_total_metros"] += distancia
+            # Acumular la distancia total
+            resultado_final["distancia_total_metros"] += distancia_real
 
-            if reserva['idVehiculo'] == 1:
-                metricas_por_dir[id_dir]['suma_1'] += distancia
-                metricas_por_dir[id_dir]['count_1'] += 1
-            elif reserva['idVehiculo'] == 4:
-                metricas_por_dir[id_dir]['suma_4'] += distancia
-                metricas_por_dir[id_dir]['count_4'] += 1
+            # Acumular métricas según el tipo de vehículo
+            if reserva_asignada['idVehiculo'] == 1:
+                metricas_por_dir[id_dir]["suma_1"] += distancia_real
+                metricas_por_dir[id_dir]["count_1"] += 1
+            elif reserva_asignada['idVehiculo'] == 4:
+                metricas_por_dir[id_dir]["suma_4"] += distancia_real
+                metricas_por_dir[id_dir]["count_4"] += 1
 
-            metricas_por_dir[id_dir]['distancia_total'] += distancia
+            metricas_por_dir[id_dir]["distancia_total"] += distancia_real
 
-            # Añadir la asignación
-            resultado_final["asignaciones"].append({
+            # Registrar la asignación en el formato solicitado
+            asignacion_registro = {
                 "$id": f"{id_dir}-{len(resultado_final['asignaciones'])+1}",
-                "IdViaje": viaje['id'],
-                "IdReserva": reserva['id'],
-                "DistanciaPickeo": round(distancia, 2),
-                "Coeficiente": round(distancia, 2)
-            })
+                "IdViaje": viaje_asignado['id'],
+                "IdReserva": reserva_asignada['id'],
+                "DistanciaPickeo": round(distancia_real, 2),
+                "Coeficiente": round(costo_asignacion, 2)
+            }
+            resultado_final["asignaciones"].append(asignacion_registro)
 
-    # 7. Calcular promedios globales
-    total_1 = 0
-    count_1 = 0
-    total_4 = 0
-    count_4 = 0
+    # Calcular promedios globales para cada tipo de vehículo
+    total_distancia_v1 = 0
+    total_distancia_v4 = 0
+    total_count_v1 = 0
+    total_count_v4 = 0
 
     for id_dir, metrics in metricas_por_dir.items():
-        total_1 += metrics['suma_1']
-        count_1 += metrics['count_1']
-        total_4 += metrics['suma_4']
-        count_4 += metrics['count_4']
+        total_distancia_v1 += metrics["suma_1"]
+        total_count_v1 += metrics["count_1"]
+        total_distancia_v4 += metrics["suma_4"]
+        total_count_v4 += metrics["count_4"]
 
-    if count_1 > 0:
-        resultado_final["distancia_promedio_idvehiculo_1"] = round(total_1 / count_1, 2)
-    if count_4 > 0:
-        resultado_final["distancia_promedio_idvehiculo_4"] = round(total_4 / count_4, 2)
+    if total_count_v1 > 0:
+        resultado_final["distancia_promedio_idvehiculo_1"] = round(total_distancia_v1 / total_count_v1, 2)
+    if total_count_v4 > 0:
+        resultado_final["distancia_promedio_idvehiculo_4"] = round(total_distancia_v4 / total_count_v4, 2)
 
     resultado_final["distancia_total_metros"] = round(resultado_final["distancia_total_metros"], 2)
 
-    # 8. Calcular métricas por dirección
-    resultado_final["metricas_por_direccion"] = {}
+    # Calcular y almacenar las métricas por cada dirección
     for id_dir, metrics in metricas_por_dir.items():
-        dist_total_dir = metrics['distancia_total']
-        d1 = metrics['suma_1']
-        c1 = metrics['count_1']
-        d4 = metrics['suma_4']
-        c4 = metrics['count_4']
-        
+        if metrics["count_1"] > 0:
+            promedio_v1 = round(metrics["suma_1"] / metrics["count_1"], 2)
+        else:
+            promedio_v1 = 0
+        if metrics["count_4"] > 0:
+            promedio_v4 = round(metrics["suma_4"] / metrics["count_4"], 2)
+        else:
+            promedio_v4 = 0
+
         resultado_final["metricas_por_direccion"][id_dir] = {
-            "distancia_total_metros": round(dist_total_dir, 2),
-            "distancia_promedio_idvehiculo_1": round(d1 / c1, 2) if c1 > 0 else 0,
-            "distancia_promedio_idvehiculo_4": round(d4 / c4, 2) if c4 > 0 else 0
+            "distancia_total_metros": round(metrics["distancia_total"], 2),
+            "distancia_promedio_idvehiculo_1": promedio_v1,
+            "distancia_promedio_idvehiculo_4": promedio_v4
         }
 
     return resultado_final

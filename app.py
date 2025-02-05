@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
 from PMAsignador import asignar_repas_envios_simple, asignar_repas_envios_zonas
+from datetime import datetime
+
+
 
 app = Flask(__name__)
 
@@ -41,6 +44,8 @@ def asignar_repas_zonas():
         # Extraer los parámetros de la solicitud
         viajes = data.get('viajes')
         reservas = data.get('reservas')
+
+        current_time = datetime.fromisoformat(data.get('CurrentTime'))
         
         # Los dos nuevos parámetros de distancia máxima
         dist_max_v1 = data.get('DistanciaMaximaVehiculo1')
@@ -57,7 +62,7 @@ def asignar_repas_zonas():
         if not isinstance(viajes, list) or not isinstance(reservas, list):
             return jsonify({"error": "'viajes' y 'reservas' deben ser listas"}), 400
         
-        # Asegurarnos de que las distancias máximas vengan como números
+        # Asegurarnos de que las distancias máximas vengan como znúmeros
         try:
             dist_max_v1 = float(dist_max_v1)
             dist_max_v4 = float(dist_max_v4)
@@ -66,7 +71,7 @@ def asignar_repas_zonas():
             return jsonify({"error": "DistanciaMaximaVehiculo1 y DistanciaMaximaVehiculo4 deben ser numéricos"}), 400
         
         # Llamar a la función con los nuevos parámetros
-        resultado = asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_max_entrega_v4)
+        resultado = asignar_repas_envios_zonas(viajes, reservas, dist_max_v1, dist_max_v4, dist_max_entrega_v4, current_time)
         
         # Devolver el resultado como JSON
         return jsonify(resultado)
