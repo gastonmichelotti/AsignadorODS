@@ -1,0 +1,80 @@
+{
+  "viajes": [
+    {
+      "distancia": 1070.0,
+      "id": 1111, 
+      "idUsuario": 16556,
+      "idDireccion": 2820679,
+      "idDireccion_destino": 2820679,
+      "latitudOrigen": -34.62622, 
+      "longitudOrigen": -58.42298, 
+      "fechaProcesamiento": "2024-01-15T14:29:00"
+    },
+    {
+      "distancia": 2010.0,
+      "id": 2222, 
+      "idUsuario": 16556,
+      "idDireccion": 2820679,
+      "idDireccion_destino": 2820688,
+      "latitudOrigen": -34.63046, 
+      "longitudOrigen": -58.41886,
+      "fechaProcesamiento": "2024-01-15T14:29:00"
+    },
+    {
+      "distancia": 1650.0,
+      "id": 3333,
+      "idUsuario": 16556,
+      "idDireccion": 2820679,
+      "idDireccion_destino": 2820667,
+      "latitudOrigen": -34.6244, 
+      "longitudOrigen": -58.43527,
+      "fechaProcesamiento": "2024-01-15T14:29:00"
+    }        
+  ],
+  "reservas": [
+    {
+      "id": 9999,
+      "idDireccion": 2820679,
+      "idDireccion_calculada": 2820679,
+      "radioMaximoAsignacion": 8000,
+      "latitud": -34.627,  
+      "longitud": -58.42677,
+      "idUsuario": 23317,
+      "idVehiculo": 4
+    },
+     {
+      "id": 8888, 
+      "idDireccion": 2820688,
+      "idDireccion_calculada": 2820679,
+      "radioMaximoAsignacion": 8000,
+      "latitud": -34.627,  
+      "longitud": -58.42677,
+      "idUsuario": 23317,
+      "idVehiculo": 1
+    },
+     {
+      "id": 7777, 
+      "idDireccion": 2820667,
+      "idDireccion_calculada": 2820679,
+      "radioMaximoAsignacion": 8000,
+      "latitud": -34.627,  
+      "longitud": -58.42677,
+      "idUsuario": 23317,
+      "idVehiculo": 4
+    },
+     {
+      "id": 6666, 
+      "idDireccion": 2820663,
+      "idDireccion_calculada": 2820679,
+      "radioMaximoAsignacion": 8000,
+      "latitud": -34.627,  
+      "longitud": -58.42677,
+      "idUsuario": 23317,
+      "idVehiculo": 1
+    }
+  ],
+  "DistanciaMaximaVehiculo1": 8000,
+  "DistanciaMaximaVehiculo4": 3000,
+  "DistanciaMaximaEntregaVehiculo4": 3000,
+  "CurrentTime": "2024-01-15T14:30:00"
+}
